@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import EmployeeDetail from './components/EmployeeDetail'; // Import EmployeeDetail
 import { useAuth } from './context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
@@ -10,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 font-['Fira_Code']">
+      <div className="flex items-center justify-center min-h-screen bg-white dark:bg-black font-fira-code">
         Loading authentication...
       </div>
     );
@@ -34,6 +35,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employee/:id"
+          element={
+            <ProtectedRoute>
+              <EmployeeDetail />
             </ProtectedRoute>
           }
         />
