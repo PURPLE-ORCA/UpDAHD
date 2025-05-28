@@ -4,7 +4,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Icon } from "@iconify/react";
-
 const AddEmployeeModal = ({
   isAddModalOpen,
   setIsAddModalOpen,

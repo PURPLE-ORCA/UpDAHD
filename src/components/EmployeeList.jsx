@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from './ui/card';
 import { Icon } from "@iconify/react"; // Assuming Icon is used here
-
 const EmployeeList = ({ employees, openEditModal, confirmDeleteEmployee }) => {
+
   const getClassBadgeColor = (classId) => {
     switch (classId) {
       case 1: return 'bg-blue-500 text-white'; // blue

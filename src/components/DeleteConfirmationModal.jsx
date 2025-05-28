@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
-
 const DeleteConfirmationModal = ({
   isDeleteConfirmModalOpen,
   setIsDeleteConfirmModalOpen,
   executeDeleteEmployee,
 }) => {
+
   return (
     <Dialog
       open={isDeleteConfirmModalOpen}
@@ -28,7 +28,10 @@ const DeleteConfirmationModal = ({
           >
             Cancel
           </Button>
-          <Button variant="destructive" onClick={executeDeleteEmployee}>
+          <Button
+            variant="destructive"
+            onClick={executeDeleteEmployee}
+          >
             Delete
           </Button>
         </DialogFooter>

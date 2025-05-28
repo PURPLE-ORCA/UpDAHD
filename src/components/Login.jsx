@@ -70,12 +70,6 @@ const Login = () => {
               {loading ? 'Loading...' : 'Login'}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
-            Don't have an account?{' '}
-            <a href="/register" className="underline">
-              Sign up
-            </a>
-          </div>
         </CardContent>
       </Card>
     </div>

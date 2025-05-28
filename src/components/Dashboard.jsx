@@ -5,7 +5,6 @@ import AddEmployeeModal from './AddEmployeeModal';
 import EditEmployeeModal from './EditEmployeeModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { Button } from './ui/button'; 
-
 const Dashboard = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
