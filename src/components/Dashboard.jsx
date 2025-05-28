@@ -5,12 +5,10 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { supabase } from '../supabaseClient';
-import { useNavigate, Link } from 'react-router-dom'; // Import Link
-import { Icon } from "@iconify/react";
-import ThemeToggle from './ThemeToggle'; // Import ThemeToggle
+import { Link } from 'react-router-dom'; // Keep Link for employee detail navigation
 
 const Dashboard = () => {
-  const navigate = useNavigate();
+  // Removed useNavigate as navigation is handled by Layout
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -54,7 +52,7 @@ const Dashboard = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('employees')
-      .select('*');
+      .select('*, classes(name)'); // Select all from employees and the name from the related classes table
 
     if (error) {
       setError(error.message);
@@ -65,10 +63,7 @@ const Dashboard = () => {
     setLoading(false);
   };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate('/login');
-  };
+  // Removed handleLogout as it's now in Layout
 
   const handleAddEmployee = async () => {
     const { data: user, error: userError } = await supabase.auth.getUser();
@@ -155,83 +150,71 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-white dark:bg-black font-fira-code p-8">
-      <div className="w-full max-w-6xl flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-black dark:text-white">
-          Employee Dashboard
-        </h1>
-        <div className="flex space-x-4">
-          <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-black text-white dark:bg-white dark:text-black">
-                <span className="iconify mr-2" data-icon="mdi:plus"></span> Add
-                Employee
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] dark:bg-black dark:text-white">
-              <DialogHeader>
-                <DialogTitle>Add Employee</DialogTitle>
-                <DialogDescription>
-                  Fill in the details for the new employee.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Name
-                  </Label>
-                  <Input
-                    id="name"
-                    value={newEmployeeName}
-                    onChange={(e) => setNewEmployeeName(e.target.value)}
-                    className="col-span-3 dark:bg-black dark:text-white"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="email" className="text-right">
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={newEmployeeEmail}
-                    onChange={(e) => setNewEmployeeEmail(e.target.value)}
-                    className="col-span-3 dark:bg-black dark:text-white"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="class_id" className="text-right">
-                    Class ID
-                  </Label>
-                  <Input
-                    id="class_id"
-                    type="number"
-                    value={newEmployeeClassId}
-                    onChange={(e) =>
-                      setNewEmployeeClassId(parseInt(e.target.value))
-                    }
-                    className="col-span-3 dark:bg-black dark:text-white"
-                  />
-                </div>
+    <div className="p-4"> {/* Removed min-h-screen, bg-white, dark:bg-black, font-fira-code as handled by Layout */}
+      <div className="w-full max-w-6xl flex justify-end items-center mb-8"> {/* Adjusted for Add Employee button only */}
+        <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+          <DialogTrigger asChild>
+            <Button className="bg-black text-white dark:bg-white dark:text-black">
+              <span className="iconify mr-2" data-icon="mdi:plus"></span> Add
+              Employee
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px] dark:bg-black dark:text-white">
+            <DialogHeader>
+              <DialogTitle>Add Employee</DialogTitle>
+              <DialogDescription>
+                Fill in the details for the new employee.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right">
+                  Name
+                </Label>
+                <Input
+                  id="name"
+                  value={newEmployeeName}
+                  onChange={(e) => setNewEmployeeName(e.target.value)}
+                  className="col-span-3 dark:bg-black dark:text-white"
+                />
               </div>
-              <DialogFooter>
-                <Button
-                  onClick={handleAddEmployee}
-                  className="bg-black hover:bg-black text-white"
-                >
-                  Add Employee
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-          <ThemeToggle /> {/* Add ThemeToggle component */}
-          <Button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white"
-          >
-            <span className="iconify mr-2" data-icon="mdi:logout"></span> Logout
-          </Button>
-        </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="email" className="text-right">
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={newEmployeeEmail}
+                  onChange={(e) => setNewEmployeeEmail(e.target.value)}
+                  className="col-span-3 dark:bg-black dark:text-white"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="class_id" className="text-right">
+                  Class ID
+                </Label>
+                <Input
+                  id="class_id"
+                  type="number"
+                  value={newEmployeeClassId}
+                  onChange={(e) =>
+                    setNewEmployeeClassId(parseInt(e.target.value))
+                  }
+                  className="col-span-3 dark:bg-black dark:text-white"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                onClick={handleAddEmployee}
+                className="bg-black hover:bg-black text-white"
+              >
+                Add Employee
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {loading && (
@@ -255,7 +238,7 @@ const Dashboard = () => {
                   employee.current_class_id
                 )}`}
               >
-                Class ID: {employee.current_class_id}
+                {employee.classes ? employee.classes.name : `Class ID: ${employee.current_class_id}`}
               </span>
             </CardContent>
             <CardFooter className="flex justify-end space-x-2">
