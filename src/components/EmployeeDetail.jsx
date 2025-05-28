@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Removed useNavigate
+import { useParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Label } from './ui/label';
-import { Input } from './ui/input';
+import EmployeeInfoCard from './EmployeeInfoCard';
+import EmployeeActions from './EmployeeActions';
+import ProgressHistoryCard from './ProgressHistoryCard';
 
 const EmployeeDetail = () => {
   const { id } = useParams();
@@ -192,69 +191,16 @@ const EmployeeDetail = () => {
   }
 
   return (
-    <div className="flex justify-center items-center p-4">
-      <Card className="w-full max-w-md shadow-lg dark:bg-black dark:text-white">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-purple-800 dark:text-white">Employee Details</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="name" className="text-black dark:text-white">Name</Label>
-            <Input id="name" value={employee.name} readOnly className="mt-1 bg-white dark:bg-black border-black dark:border-white" />
-          </div>
-          <div>
-            <Label htmlFor="email" className="text-black dark:text-white">Email</Label>
-            <Input id="email" value={employee.email} readOnly className="mt-1 bg-white dark:bg-black border-black dark:border-white" />
-          </div>
-          <div>
-            <Label htmlFor="classId" className="text-black dark:text-white">Current Class</Label>
-            <Input id="classId" value={employee.classes ? employee.classes.name : `ID: ${employee.current_class_id}`} readOnly className="mt-1 bg-white dark:bg-black border-black dark:border-white" />
-          </div>
-
-          {feedback && (
-            <div className={`p-3 rounded-md text-sm font-fira-code ${feedbackType === 'success' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-white' : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-white'}`}>
-              {feedback}
-            </div>
-          )}
-
-          {employee.current_class_id < 6 && (
-            <Button onClick={handlePromote} className="w-full bg-green-600 hover:bg-green-700 text-white dark:bg-green-700 dark:hover:bg-green-800">
-              Promote to Next Class
-            </Button>
-          )}
-          {employee.current_class_id > 1 && (
-            <Button onClick={handleDowngrade} className="w-full bg-red-600 hover:bg-red-700 text-white dark:bg-red-700 dark:hover:bg-red-800 mt-2">
-              Downgrade to Past Class
-            </Button>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Progress Logs Section */}
-      <Card className="w-full max-w-md shadow-lg dark:bg-black dark:text-white mt-4">
-        <CardHeader>
-          <CardTitle className="text-xl font-bold text-purple-800 dark:text-white font-fira-code">Progress History</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {progressLogs.length > 0 ? (
-            progressLogs.map((log, index) => (
-              <div
-                key={index}
-                className={`flex justify-between items-center p-2 rounded-md font-fira-code text-sm
-                  ${log.action_type === 'promoted' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-white' : ''}
-                  ${log.action_type === 'downgraded' ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-white' : ''}
-                  ${!log.action_type ? 'bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200' : ''}
-                `}
-              >
-                <span>Got {log.action_type} to {log.classes?.name || `Class ID: ${log.class_id}`}</span>
-                <span>{new Date(log.completed_at).toLocaleString()}</span>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500 dark:text-gray-400 font-fira-code">No progress logs found.</p>
-          )}
-        </CardContent>
-      </Card>
+    <div className="flex flex-col items-center p-4">
+      <EmployeeInfoCard employee={employee} />
+      <EmployeeActions
+        employee={employee}
+        handlePromote={handlePromote}
+        handleDowngrade={handleDowngrade}
+        feedback={feedback}
+        feedbackType={feedbackType}
+      />
+      <ProgressHistoryCard progressLogs={progressLogs} />
     </div>
   );
 };

@@ -1,15 +1,19 @@
-import React from 'react';
-import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom'; // Import Outlet
-import { Button } from './ui/button';
-import { Icon } from "@iconify/react";
-import ThemeToggle from './ThemeToggle';
+import React, { useState } from 'react';
+import { useLocation, useNavigate, Outlet } from 'react-router-dom'; // Import Outlet
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../supabaseClient';
+import Sidebar from './Sidebar'; // Import Sidebar
+import Header from './Header';   // Import Header
 
 const Layout = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { session } = useAuth(); // Get session from AuthContext
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   const getPageTitle = () => {
     switch (location.pathname) {
@@ -36,42 +40,11 @@ const Layout = ({ children }) => {
 
   return (
     <div className="flex min-h-screen bg-white dark:bg-black font-fira-code">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gray-100 dark:bg-black p-4 border-r border-gray-200 dark:border-gray-700 flex flex-col">
-        <div className="text-2xl font-bold mb-8 text-black dark:text-white">UpDAHD</div>
-        <nav className="flex-grow">
-          <ul>
-            <li className="mb-4">
-              <Link to="/dashboard" className="flex items-center text-black dark:text-white hover:text-purple-700 dark:hover:text-purple-300 transition-colors duration-200">
-                <Icon icon="mdi:view-dashboard" className="mr-3 text-xl" />
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link to="/classes" className="flex items-center text-black dark:text-white hover:text-purple-700 dark:hover:text-purple-300 transition-colors duration-200">
-                <Icon icon="mdi:format-list-bulleted" className="mr-3 text-xl" />
-                Classes
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} handleLogout={handleLogout} />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
-        {/* Top Bar */}
-        <header className="bg-white dark:bg-black p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-black dark:text-white">{getPageTitle()}</h2>
-          <div className="flex items-center space-x-4">
-            <ThemeToggle />
-            <Button
-              onClick={handleLogout}
-              className="bg-red-600 hover:bg-red-700 text-white"
-            >
-              <Icon icon="mdi:logout" className="mr-2" /> Logout
-            </Button>
-          </div>
-        </header>
+        <Header getPageTitle={getPageTitle} toggleSidebar={toggleSidebar} />
 
         {/* Page Content */}
         <main className="flex-1 p-8 overflow-auto">
