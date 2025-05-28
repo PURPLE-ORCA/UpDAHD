@@ -32,7 +32,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 font-['Fira_Code']">
+    <div className="flex items-center justify-center min-h-screen bg-white dark:bg-black font-['Fira_Code']">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
