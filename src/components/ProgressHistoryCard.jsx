@@ -5,7 +5,7 @@ const ProgressHistoryCard = ({ progressLogs }) => {
   return (
     <Card className="w-full max-w-md shadow-lg dark:bg-black dark:text-white mt-4">
       <CardHeader>
-        <CardTitle className="text-xl font-bold text-purple-800 dark:text-white font-fira-code">Progress History</CardTitle>
+        <CardTitle className="text-xl font-bold text-black dark:text-white font-fira-code">Progress History</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
         {progressLogs.length > 0 ? (

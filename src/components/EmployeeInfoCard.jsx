@@ -7,7 +7,7 @@ const EmployeeInfoCard = ({ employee }) => {
   return (
     <Card className="w-full max-w-md shadow-lg dark:bg-black dark:text-white">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-purple-800 dark:text-white">Employee Details</CardTitle>
+        <CardTitle className="text-2xl font-bold text-black0 dark:text-white">Employee Details</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
